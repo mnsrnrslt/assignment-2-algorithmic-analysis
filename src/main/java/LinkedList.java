@@ -14,11 +14,22 @@ public class LinkedList<T> {
     private Node<T> tail;
     private int size;
 
+    // --- benchmarking counters ---
+    private long accessCount = 0;
+    private long comparisonCount = 0;
+
     public int size() {
         return size;
     }
 
-    // ---- add(x): append at the end ----
+    public void resetCounters() {
+        accessCount = 0;
+        comparisonCount = 0;
+    }
+
+    public long getAccessCount() { return accessCount; }
+    public long getComparisonCount() { return comparisonCount; }
+
     public void add(T x) {
         Node<T> node = new Node<>(x);
         if (tail == null) {
@@ -31,7 +42,6 @@ public class LinkedList<T> {
         size++;
     }
 
-    // ---- add(index, x): insert before current element at index ----
     public void add(int index, T x) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
@@ -49,14 +59,13 @@ public class LinkedList<T> {
         target.prev = node;
 
         if (before == null) {
-            head = node; // inserting at index 0
+            head = node;
         } else {
             before.next = node;
         }
         size++;
     }
 
-    // ---- remove(index) ----
     public T remove(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
@@ -66,13 +75,13 @@ public class LinkedList<T> {
         Node<T> after = target.next;
 
         if (before == null) {
-            head = after; // removing head
+            head = after;
         } else {
             before.next = after;
         }
 
         if (after == null) {
-            tail = before; // removing tail
+            tail = before;
         } else {
             after.prev = before;
         }
@@ -81,7 +90,6 @@ public class LinkedList<T> {
         return target.value;
     }
 
-    // ---- get(index) ----
     public T get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
@@ -89,10 +97,10 @@ public class LinkedList<T> {
         return getNode(index).value;
     }
 
-    // ---- contains(x) ----
     public boolean contains(T x) {
         Node<T> current = head;
         while (current != null) {
+            comparisonCount++;
             if (current.value == null ? x == null : current.value.equals(x)) {
                 return true;
             }
@@ -101,20 +109,22 @@ public class LinkedList<T> {
         return false;
     }
 
-    // Walks from whichever end (head or tail) is closer to index.
     private Node<T> getNode(int index) {
         Node<T> current;
         if (index < size / 2) {
             current = head;
             for (int i = 0; i < index; i++) {
                 current = current.next;
+                accessCount++;
             }
         } else {
             current = tail;
             for (int i = size - 1; i > index; i--) {
                 current = current.prev;
+                accessCount++;
             }
         }
+        accessCount++; // counting the final landing step too
         return current;
     }
 }
