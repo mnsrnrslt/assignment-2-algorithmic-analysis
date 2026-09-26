@@ -183,7 +183,7 @@ public class Benchmark {
 
                 array.resetCounters();
                 long start = System.nanoTime();
-                for (int i = 0; i < 1_000; i++) {
+                for (int i = 0; i < 1_000 && array.size() > 0; i++) {
                     int safeIndex = Math.min(index, array.size() - 1);
                     array.remove(safeIndex);
                 }
@@ -195,7 +195,7 @@ public class Benchmark {
 
                 list.resetCounters();
                 long start = System.nanoTime();
-                for (int i = 0; i < 1_000; i++) {
+                for (int i = 0; i < 1_000 && list.size() > 0; i++) {
                     int safeIndex = Math.min(index, list.size() - 1);
                     list.remove(safeIndex);
                 }
