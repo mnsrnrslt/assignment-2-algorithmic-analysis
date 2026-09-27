@@ -1,0 +1,5 @@
+n,avgInsertTimeNanos,avgExtractTimeNanos,comparisons,orderCorrect
+100,26675.0,53992.0,1069,true
+1000,48366.8,153808.2,17322,true
+10000,272800.2,910075.0,239284,true
+100000,1828416.8,1.15956086E7,3059283,true
