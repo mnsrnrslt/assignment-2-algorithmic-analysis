@@ -37,3 +37,7 @@ build/
 
 ### Mac OS ###
 .DS_Storevenv/
+.idea/
+.DS_Store
+.idea/
+.DS_Store
